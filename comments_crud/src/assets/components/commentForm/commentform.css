@@ -1,0 +1,25 @@
+
+.formContainer {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 30%;
+}
+
+.formContainer input,.formContainer textarea {
+    padding: 10px;
+    resize: none;
+    /* height: 50px; */
+    border-radius: 5px;
+}
+.submit{
+    background-color: #7aa2f7;
+    width: 120px;
+    height: 40px;
+    padding: 5px 0;
+    border-radius: 10px;
+    margin-top: 5px;
+    cursor: pointer;
+    color: #fff;
+}

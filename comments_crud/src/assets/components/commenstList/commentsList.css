@@ -1,0 +1,46 @@
+.comments-container {
+    background-color: #f6f8fc;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-family: Arial, sans-serif;
+}
+.comment-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 15px 18px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-left: 5px solid #7aa2f7;
+}
+.comment-card h4 {
+    margin: 0;
+    color: #2b2f36;
+    font-size: 16px;
+}
+.email {
+    color: #6b7280;
+    font-size: 13px;
+    margin: 4px 0;
+}
+.body {
+    color: #3b3f46;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.actions{
+    display: flex;
+    gap: 20px;
+}
+.actions button{
+    background-color: #7aa2f7;
+    width: 100px;
+    padding: 5px 0;
+    border-radius: 10px;
+    margin-top: 5px;
+    color: #ffffff;
+    cursor: pointer;
+}
+.actions .deleteBtn{
+    background-color: rgb(250, 74, 74);
+}
