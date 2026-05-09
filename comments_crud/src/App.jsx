@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import CommentsList from "./assets/components/commenstList/CommentsList";
-import CommentForm from "./assets/components/commentForm/CommentForm";
+import CommentsList from "./components/commenstList/CommentsList";
+import CommentForm from "./components/commentForm/CommentForm";
 import "./App.css";
 
 function App() {
