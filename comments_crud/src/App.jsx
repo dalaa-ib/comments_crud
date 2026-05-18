@@ -8,37 +8,77 @@ function App() {
   const [editingComment, setEditingComment] = useState(null);
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/comments")
+    fetch("https://jsonplaceholder.typicode.com/comments?")
       .then((res) => res.json())
       .then((data) => setComments(data));
   }, []);
+  async function addComment(newComment) {
+    try {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/comments",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newComment),
+        }
+      );
 
-  function addComment(newComment) {
-    setComments((prev) => {
-      const lastId = prev.length > 0 ? prev[prev.length - 1].id : 0;
-      return [
-        { ...newComment, id: lastId + 1 },
-        ...prev,
-      ];
-    });
-  }
+      const data = await response.json();
 
-  function deleteComment(id) {
-    setComments((prev) =>
-      prev.filter((comment) => comment.id !== id)
-    );
+      setComments((prev) => [data, ...prev]);
+    } catch (error) {
+      console.log(error);
+    }
+  } 
+
+  async function deleteComment(id) {
+    try {
+      await fetch(`https://jsonplaceholder.typicode.com/comments/${id}`, {
+        method: "DELETE",
+      });
+
+      setComments((prev) =>
+        prev.filter((comment) => comment.id !== id)
+      );
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function editComment(comment) {
     setEditingComment(comment);
   }
 
-  function updateComment(updatedComment) {
-    setComments((prev) =>
-      prev.map((comment) =>
-        comment.id === updatedComment.id ? updatedComment: comment
-    ));
+  async function updateComment(updatedComment) {
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/comments/${updatedComment.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedComment),
+        }
+      );
+
+      const data = await response.json();
+
+      setComments((prev) =>
+        prev.map((comment) =>
+          comment.id === updatedComment.id ? data : comment
+        )
+      );
+
+      setEditingComment(null);
+
+    } catch (error) {
+      console.log(error);
+    }
   }
+
   return (
     <div>
       <h1 className="commentsCrud">Comments Crud</h1>
