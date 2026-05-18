@@ -1,82 +1,50 @@
 import React, { useEffect, useState } from "react";
 import CommentsList from "./components/commenstList/CommentsList";
 import CommentForm from "./components/commentForm/CommentForm";
+
+import {getComments, addCommentApi, deleteCommentApi, updateCommentApi,} from "./components/Api/Api";
 import "./App.css";
 
 function App() {
   const [comments, setComments] = useState([]);
   const [editingComment, setEditingComment] = useState(null);
-
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/comments?")
-      .then((res) => res.json())
-      .then((data) => setComments(data));
+    loadComments();
   }, []);
-  async function addComment(newComment) {
-    try {
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/comments",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newComment),
-        }
-      );
+  
+  async function loadComments() {
+    const data = await getComments();
+    setComments(data);
+  }
 
-      const data = await response.json();
+  async function addComment(comment) {
+    const data = await addCommentApi(comment);
 
-      setComments((prev) => [data, ...prev]);
-    } catch (error) {
-      console.log(error);
-    }
-  } 
+    setComments((prev) => [data, ...prev]);
+  }
 
   async function deleteComment(id) {
-    try {
-      await fetch(`https://jsonplaceholder.typicode.com/comments/${id}`, {
-        method: "DELETE",
-      });
+    await deleteCommentApi(id);
 
-      setComments((prev) =>
-        prev.filter((comment) => comment.id !== id)
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    setComments((prev) =>
+      prev.filter((comment) => comment.id !== id)
+    );
   }
 
   function editComment(comment) {
     setEditingComment(comment);
   }
 
-  async function updateComment(updatedComment) {
-    try {
-      const response = await fetch(
-        `https://jsonplaceholder.typicode.com/comments/${updatedComment.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedComment),
-        }
-      );
+  async function updateComment(comment) {
+    const updated = await updateCommentApi(comment);
 
-      const data = await response.json();
+    setComments((prev) =>
+      prev.map((item) =>
+        item.id === updated.id ? updated : item
+      )
+    );
 
-      setComments((prev) =>
-        prev.map((comment) =>
-          comment.id === updatedComment.id ? data : comment
-        )
-      );
-
-      setEditingComment(null);
-
-    } catch (error) {
-      console.log(error);
-    }
+    setEditingComment(null);
   }
 
   return (
